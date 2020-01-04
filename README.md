@@ -1,3 +1,10 @@
+## Laravel Cheap Price
+
+[![Build Status](https://travis-ci.com/lucianopalhares/cheap_price.svg?branch=master)](https://travis-ci.com/lucianopalhares/cheap_price)
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+
+https://img.shields.io/packagist/v/kdyby/datetime-provider.svg
 
 ## About Cheap Price
 
