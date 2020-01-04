@@ -1,18 +1,9 @@
-<h1>Laravel Cheap Price</h1>
+<p align="center"><img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1566331377/laravel-logolockup-cmyk-red.svg" width="400"></p>
 
-<table border="0">
-  <tr>
-    <td>
-[![Build Status](https://travis-ci.com/lucianopalhares/cheap_price.svg?branch=master)](https://travis-ci.com/lucianopalhares/cheap_price)
-    <td>
-
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-    </td>
-    <td>
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
-    </td>
-  </tr>
-</table>
+<p align="center">
+<a href="https://travis-ci.com/lucianopalhares/cheap_price"><img src="https://travis-ci.com/lucianopalhares/cheap_price.svg?branch=master" alt="Build Status"></a>
+<a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License"></a>
+</p>
 
 ## About
 
