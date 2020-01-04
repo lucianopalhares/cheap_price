@@ -5,7 +5,7 @@
 <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License"></a>
 </p>
 
-## About
+## Laravel Cheap Price
 
 The aim of the project is to make an web site where the client should get the lower and the cheapest price of the products in supermarkets of the my city Caldas Novas - GO. Points:
 
