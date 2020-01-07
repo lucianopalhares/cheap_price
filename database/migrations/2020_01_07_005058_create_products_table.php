@@ -23,6 +23,7 @@ class CreateProductsTable extends Migration
             $table->string('measure_number');
             $table->unsignedBigInteger('measure_id');
             $table->foreign('measure_id')->references('id')->on('measures');
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }

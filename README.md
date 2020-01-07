@@ -7,7 +7,7 @@
 
 ## Laravel Cheap Price
 
-The aim of the project is to make an web site where the client should get the lower and the cheapest price of the products in supermarkets of the my city Caldas Novas - GO. Points:
+The aim of the project is to make an web site where the client should get the lower and the cheapest price of the products in supermarkets of the my city. Points:
 
 - Get the lower price of the product
 - Each supermarket register price of the each product
