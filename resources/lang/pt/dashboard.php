@@ -18,5 +18,6 @@ return [
     'created_success' => 'Cadastrado(a) com Sucesso!',
     'create_error' => 'Erro no Cadastro',
     'already_exists' => 'Já Existe!',
+    'logout' => 'Sair'
 
 ];
