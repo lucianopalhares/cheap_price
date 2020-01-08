@@ -19,30 +19,22 @@
 
     <!--<canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>-->
 
-    <h2>Título da seção</h2>
-    <div class="table-responsive">
-      <table class="table table-striped table-sm">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Cabeçalho</th>
-            <th>Cabeçalho</th>
-            <th>Cabeçalho</th>
-            <th>Cabeçalho</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1</td>
-            <td>2</td>
-            <td>3</td>
-            <td>4</td>
-            <td>5</td>
-          </tr>
-          
-        </tbody>
-      </table>
+
+
+<div class="card-deck">
+  <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
+    <div class="card-header"><h4>Bem vindo, {{Auth::user()->first_name}}</h4></div>
+    <div class="card-body">
+      <h5 class="card-title"></h5>
+      <p class="card-text"></p>
+    
     </div>
+  </div>
+
+</div>
+
+
+
   </main>
 </div>
 </div>

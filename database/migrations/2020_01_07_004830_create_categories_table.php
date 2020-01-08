@@ -17,8 +17,8 @@ class CreateCategoriesTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('type_id');
             $table->foreign('type_id')->references('id')->on('types');
-            $table->string('name',100);
-            $table->string('slug',100);
+            $table->string('name',100)->unique();
+            $table->string('slug',100)->unique();
             $table->timestamps();
         });
     }

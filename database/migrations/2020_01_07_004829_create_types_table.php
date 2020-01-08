@@ -15,8 +15,8 @@ class CreateTypesTable extends Migration
     {
         Schema::create('types', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name',100);
-            $table->string('slug',100);
+            $table->string('name',100)->unique();
+            $table->string('slug',100)->unique();
             $table->timestamps();
         });
     }

@@ -23,6 +23,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::group(['namespace' => 'Admin','prefix' => 'admin'],function() {
+Route::group(['namespace' => 'Admin','prefix' => 'admin','middleware'=>'auth'],function() {
     Route::get('/dashboard', 'DashboardController@index');
+    Route::resource('/category', 'CategoriesController');
 });

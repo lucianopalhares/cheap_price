@@ -15,6 +15,10 @@ class CreateProductsTable extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedBigInteger('type_id');
+            $table->foreign('type_id')->references('id')->on('types');
+            $table->unsignedBigInteger('category_id');
+            $table->foreign('category_id')->references('id')->on('categories');
             $table->unsignedBigInteger('sub_category_id');
             $table->foreign('sub_category_id')->references('id')->on('sub_categories');
             $table->unsignedBigInteger('brand_id')->nullable();
@@ -24,6 +28,7 @@ class CreateProductsTable extends Migration
             $table->unsignedBigInteger('measure_id');
             $table->foreign('measure_id')->references('id')->on('measures');
             $table->string('image')->nullable();
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }

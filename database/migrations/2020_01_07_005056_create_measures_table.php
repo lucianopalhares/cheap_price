@@ -15,9 +15,9 @@ class CreateMeasuresTable extends Migration
     {
         Schema::create('measures', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name',100);
-            $table->string('abbrev',20);
-            $table->string('slug',100);
+            $table->string('name',100)->unique();
+            $table->string('abbrev',20)->unique();
+            $table->string('slug',100)->unique();
             $table->timestamps();
         });
     }
