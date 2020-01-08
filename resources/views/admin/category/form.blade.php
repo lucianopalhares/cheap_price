@@ -15,6 +15,7 @@
       @include('admin.flash_msg')
       
 <form>
+  
 
     @if(isset($category->id))
     <div class="form-row">

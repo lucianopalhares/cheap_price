@@ -54,29 +54,31 @@
         <nav class="col-md-2 d-none d-md-block bg-light sidebar">
           <div class="sidebar-sticky">
             <ul class="nav flex-column">
-              <li class="nav-item">
-                <a class="nav-link active" href="#">
+              
+              
+              <li class="nav-item" >
+                <a class="nav-link {{ (request()->is('admin/dashboard')) ? 'active' : '' }}" href="{{url('/admin/dashboard')}}">
                   <span data-feather="home"></span>
-                  Dashboard <span class="sr-only">(atual)</span>
+                  Dashboard
                 </a>
               </li>
-
               
-              <li class="nav-item ">
-                <a class="nav-link" data-toggle="collapse" href="#componentsCollapse">
-                  <span data-feather="dollar-sign"></span>
-                  Preços
+
+              <li class="nav-item" >
+                <a class="nav-link {{ (request()->is('admin/category/*')) ? 'active' : '' }}" data-toggle="collapse" href="#componentsCollapseCategory" aria-expanded="false">
+                  <span data-feather="grid"></span>
+                  Categoria
                 </a>
-                <div class="collapse" id="componentsCollapse">
+                <div class="collapse {{ (request()->is('admin/category/*')) ? 'show' : '' }}" id="componentsCollapseCategory">
                   <ul class="nav">
-                    <li class="nav-item ">
-                      <a class="nav-link" href="#">
-                        Meus Preços
+                    <li class="nav-item">
+                      <a class="nav-link {{ (request()->is('admin/category')) ? 'active' : '' }}" href="{{url('/admin/category')}}">
+                        &nbsp;<span data-feather="arrow-right"></span>&nbsp;Categorias
                       </a>
                     </li>
-                    <li class="nav-item ">
-                      <a class="nav-link" href="#">
-                        Cadastrar Preço
+                    <li class="nav-item">
+                      <a class="nav-link {{ (request()->is('admin/category/create')) ? 'active' : '' }}" href="{{url('/admin/category/create')}}">
+                        &nbsp;<span data-feather="arrow-right"></span>&nbsp;Nova Categoria
                       </a>
                     </li>                    
                   </ul>

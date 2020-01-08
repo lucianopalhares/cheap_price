@@ -47,13 +47,13 @@ class CategoriesController extends Controller
 
         $rules = [
             'type_id' => 'required',
-            'name_category' =>  'required|unique:categories|max:100',
+            'name' =>  'required|unique:categories|max:100',
         ];
         $this->validate($request, $rules);
 
         $slug = str_slug($request->name);
 
-        $this->category::create(['name_category' => $request->name, 'slug' => $slug, 'type_id' => $request->type_id]);
+        $this->category::create(['name' => $request->name, 'slug' => $slug, 'type_id' => $request->type_id]);
         
         return back()->with('success', trans('dashboard.category').' '.trans('dashboard.created_success'));
     }
