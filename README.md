@@ -1,4 +1,4 @@
-<p align="center"><img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1566331377/laravel-logolockup-cmyk-red.svg" width="400"></p>
+<p align="center"><img src="https://image.flaticon.com/icons/svg/2038/2038970.svg" width="400"></p>
 
 <p align="center">
 <a href="https://travis-ci.com/lucianopalhares/cheap_price"><img src="https://travis-ci.com/lucianopalhares/cheap_price.svg?branch=master" alt="Build Status"></a>
@@ -12,7 +12,7 @@ The aim of the project is to make an web site where the client should get the lo
 - Get the lower price of the product
 - Each supermarket register price of the each product
 - The index page get the lower price of that product
-- Show only the price and product of one supermarket that registered that same product and price
+- Show only the cheapest price and product of one supermarket that registered that same product
 - Etc ...
 
 ## License
