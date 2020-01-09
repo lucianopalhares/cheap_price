@@ -5,5 +5,17 @@
     
       @yield('page-js')
 
+<script>
 
+
+$( document ).ready(function() {
+  $(function () {
+    $('select').selectpicker({
+      liveSearch: true
+    });
+  });
+});
+
+
+</script>
 </body>

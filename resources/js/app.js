@@ -9,6 +9,8 @@ window.JQuery = require('jquery');
 const feather = require('feather-icons');
 feather.replace();
 
+require('bootstrap-select');
+
 require('./bootstrap');
 
 window.Vue = require('vue');
