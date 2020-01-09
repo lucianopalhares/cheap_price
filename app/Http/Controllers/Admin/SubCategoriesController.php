@@ -10,14 +10,14 @@ use Exception;
 use Illuminate\Validation\Rule;
 use \App;
 
-class CategoriesController extends Controller
+class SubCategoriesController extends Controller
 {
     protected $model;
-    protected $type;
+    protected $category;
     
     public function __construct(){
-      $this->type = App::make('App\Type');
-      $this->model = App::make('App\Category');
+      $this->category = App::make('App\Category');
+      $this->model = App::make('App\SubCategory');
     }
     /**
      * Display a listing of the resource.
@@ -27,7 +27,7 @@ class CategoriesController extends Controller
     public function index()
     {
         $items = $this->model::paginate(10);
-        return view('admin.category.index',compact('items'));
+        return view('admin.sub_category.index',compact('items'));
     }
 
     /**
@@ -37,8 +37,8 @@ class CategoriesController extends Controller
      */
     public function create()
     {
-        $types = $this->type::all();
-        return view('admin.category.form',compact('types'));
+        $categories = $this->category::all();
+        return view('admin.sub_category.form',compact('categories'));
     }
 
     /**
@@ -58,15 +58,15 @@ class CategoriesController extends Controller
         if($update){
           
           $rules = [
-              'type_id' => 'required',
-              'name' =>  ['required','max:100',Rule::unique('categories')->ignore($request->id)],
+              'category_id' => 'required',
+              'name' =>  ['required','max:100',Rule::unique('sub_categories')->ignore($request->id)],
           ];            
           
         }else{
           
           $rules = [
-              'type_id' => 'required',
-              'name' =>  'required|unique:categories|max:100',
+              'category_id' => 'required',
+              'name' =>  'required|unique:sub_categories|max:100',
           ];          
         }
 
@@ -81,15 +81,15 @@ class CategoriesController extends Controller
                 $model = $this->model->findOrFail($request->id);
                 
             }else{
-                $model = new App\Category;
+                $model = new App\SubCategory;
             }
             $model->name = $request->name;
             $model->slug = $slug;
-            $model->type_id = $request->type_id;   
+            $model->category_id = $request->category_id;   
             
             $save = $model->save();
             
-            $response = trans('app.category').' ';
+            $response = trans('app.sub_category').' ';
             
             if($update){
               $response .= trans('app.updated_success');
@@ -144,8 +144,8 @@ class CategoriesController extends Controller
         try {
           
             $item = $this->model->findOrFail($id);
-            $types = $this->type::all();
-            return view('admin.category.form',compact('types','item'));  
+            $categories = $this->category::all();
+            return view('admin.sub_category.form',compact('categories','item'));  
             
         } catch (\Exception $e) {//errors exceptions
           
@@ -160,7 +160,7 @@ class CategoriesController extends Controller
             if (request()->wantsJson()) {
               return response()->json(['status'=>false,'msg'=>$response]);
             }else{
-              return redirect('/admin/category')->withErrors($response);
+              return redirect('/admin/sub_category')->withErrors($response);
             }  
           
         }   
@@ -194,7 +194,7 @@ class CategoriesController extends Controller
             
             $deleted = $this->model->destroy($id); 
             
-            $response = trans('app.category').' '.trans('app.deleted_success');
+            $response = trans('app.sub_category').' '.trans('app.deleted_success');
                                                 
             if (request()->wantsJson()) {
               return response()->json(['status'=>true,'msg'=>$response]);
@@ -215,7 +215,7 @@ class CategoriesController extends Controller
             if (request()->wantsJson()) {
               return response()->json(['status'=>false,'msg'=>$response]);
             }else{
-              return redirect('/admin/category')->withErrors($response);
+              return redirect('/admin/sub_category')->withErrors($response);
             }  
           
         }  

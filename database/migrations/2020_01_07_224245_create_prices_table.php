@@ -21,8 +21,8 @@ class CreatePricesTable extends Migration
             $table->string('slug');            
             $table->unsignedBigInteger('product_id');
             $table->foreign('product_id')->references('id')->on('products');
-            $table->unsignedBigInteger('company_type_id');
-            $table->foreign('company_type_id')->references('id')->on('company_types');
+            $table->unsignedBigInteger('company_id');
+            $table->foreign('company_id')->references('id')->on('companies');
             //0 =pending for review, 1= published, 2=blocked, 3=archived
             $table->enum('status', [0,1,2,3])->nullable()->default(0);
             $table->integer('like')->nullable()->default(0);

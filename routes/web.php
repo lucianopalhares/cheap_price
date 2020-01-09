@@ -25,5 +25,9 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['namespace' => 'Admin','prefix' => 'admin','middleware'=>'auth'],function() {
     Route::get('/dashboard', 'DashboardController@index');
+    Route::resource('/type', 'TypesController');
     Route::resource('/category', 'CategoriesController');
+    Route::resource('/sub_category', 'SubCategoriesController');
+    Route::resource('/measure', 'MeasuresController');
+    Route::resource('/brand', 'BrandsController');
 });
