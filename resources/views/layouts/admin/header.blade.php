@@ -30,14 +30,14 @@
   <body>
     <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
       <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">{{ config('app.name', 'Laravel') }}</a>
-      <input class="form-control form-control-dark w-100" type="text" placeholder="{{ __('dashboard.search') }}" aria-label="Search">
+      <input class="form-control form-control-dark w-100" type="text" placeholder="{{ __('app.search') }}" aria-label="Search">
       <ul class="navbar-nav px-3">
         <li class="nav-item text-nowrap">
         
             
             <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                        {{ __('dashboard.logout') }}
+                                        {{ __('app.logout') }}
             </a>
 
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -65,20 +65,20 @@
               
 
               <li class="nav-item" >
-                <a class="nav-link {{ (request()->is('admin/category/*')) ? 'active' : '' }}" data-toggle="collapse" href="#componentsCollapseCategory" aria-expanded="false">
+                <a class="nav-link {{ (request()->is('admin/category/*')) ? 'active' : '' }} {{ (request()->is('admin/category')) ? 'active' : '' }}" data-toggle="collapse" href="#componentsCollapseCategory" aria-expanded="false">
                   <span data-feather="grid"></span>
-                  Categoria
+                  {{trans('app.category')}}
                 </a>
-                <div class="collapse {{ (request()->is('admin/category/*')) ? 'show' : '' }}" id="componentsCollapseCategory">
+                <div class="collapse {{ (request()->is('admin/category/*')) ? 'show' : '' }} {{ (request()->is('admin/category')) ? 'show' : '' }}" id="componentsCollapseCategory">
                   <ul class="nav">
                     <li class="nav-item">
                       <a class="nav-link {{ (request()->is('admin/category')) ? 'active' : '' }}" href="{{url('/admin/category')}}">
-                        &nbsp;<span data-feather="arrow-right"></span>&nbsp;Categorias
+                        &nbsp;<span data-feather="arrow-right"></span>&nbsp;{{trans('app.categories')}}
                       </a>
                     </li>
                     <li class="nav-item">
                       <a class="nav-link {{ (request()->is('admin/category/create')) ? 'active' : '' }}" href="{{url('/admin/category/create')}}">
-                        &nbsp;<span data-feather="arrow-right"></span>&nbsp;Nova Categoria
+                        &nbsp;<span data-feather="arrow-right"></span>&nbsp;{{trans('app.create')}} {{trans('app.category')}}
                       </a>
                     </li>                    
                   </ul>
