@@ -11,8 +11,12 @@
       </div>
   <br />    
   
-      @include('admin.flash_msg')
-      
+  
+  <div class="flash_msg">
+    @include('admin.flash_msg')
+  </div>      
+
+                  
 <table class="table table-hover">
   <thead>
     <tr>
@@ -34,7 +38,8 @@
       <td>{{$item->type->name}}</td>
       <td>
         <a href="{{url('admin/category/'.$item->id.'/edit')}}"><span data-feather="edit"></span></a>
-           
+          <a href="javascript:void" id="delete_item" data-id="{{ $item->id }}" onclick="confirm('{{trans('app.are_you_sure')}}')"><span data-feather="trash"></span></a>
+               
       </td>
     </tr>
     @endforeach
@@ -52,7 +57,40 @@
 
 @section('page-js')
 
-
-
+<script>
   
+
+
+  jQuery(document).ready(function(){
+      console.log( "ready!" );
+
+    $("#delete_item").click(function(e){
+        
+        var id = $(this).data("id");
+        e.preventDefault();
+        var token = $("meta[name='csrf-token']").attr("content");
+        var url = e.target;
+               
+        $.ajax(
+        {
+          url: "category/"+id, //or you can use url: "company/"+id,
+          type: 'DELETE',
+          dataType: "json",
+          data: {
+            _token: token,
+                id: id
+              },
+            success: function (data){
+              if(data.true){
+                //$( ".flash_msg" ).html('<div class="alert alert-success text-center" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data.msg+'</div>');
+                location.reload();
+              }else{
+                $( ".flash_msg" ).html('<div class="alert alert-danger text-center" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data.msg+'</div>');
+              }
+            }
+        });
+       
+    });
+  });
+</script>
 @endsection

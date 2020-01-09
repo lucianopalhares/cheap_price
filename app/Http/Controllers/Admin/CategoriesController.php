@@ -194,6 +194,14 @@ class CategoriesController extends Controller
             
             $deleted = $this->model->destroy($id); 
             
+            $response = trans('app.category').' '.trans('app.deleted_success');
+                                    
+            if (request()->wantsJson()) {
+              return response()->json(['status'=>true,'msg'=>$response]);
+            }else{
+              return back()->with('success', $response);
+            }    
+            
         } catch (\Exception $e) {//errors exceptions
           
             $response = null;
