@@ -108,9 +108,20 @@
         <label for="description">{{trans('app.image')}}:</label>
         <input type="file" name="image" class="form-control">
       </div>
-      <div class="form-group col-md-3"></div>
+      <div class="form-group col-md-3">
+      </div>
     </div> 
-    
+
+    <div class="form-row">
+      <div class="form-group col-md-2 "></div>
+      <div class="form-group col-md-6">
+        <label for="description"></label>
+        <img src="/images/products/thumbs/{{$item->image}}" width="100" alt="">
+      </div>
+      <div class="form-group col-md-3">
+      </div>
+    </div> 
+        
     <div class="form-row">
       <div class="form-group col-md-2"></div>
       <div class="form-group col-md-6">

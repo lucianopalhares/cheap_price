@@ -33,9 +33,9 @@
     <tr>
       <th scope="row">{{$item->id}}</th>
       <td>
-      {{$item->subCategory->name}}->{{$item->model}}->{{$item->brand_id?$item->brand->name:' '}}->{{$item->measure_number}} {{$item->measure->abbrev}}
+      {{$item->subCategory->name}}{{$item->model?' '.$item->model:''}}{{$item->brand_id?'->'.$item->brand->name:' '}}{{$item->measure_number}} {{$item->measure->abbrev}}
 
-      <td>{{$item->image}}</td>
+      <td><img src="/images/products/thumbs/{{$item->image}}" width="50" alt=""></td>
       <td>
         <a href="{{url('admin/product/'.$item->id.'/edit')}}" class="text-primary"><span data-feather="edit"></span></a>
         <a href="#" class="text-danger" id="delete_item" data-id="{{ $item->id }}"><span data-feather="trash"></span></a>
