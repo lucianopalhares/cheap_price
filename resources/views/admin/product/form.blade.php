@@ -111,7 +111,7 @@
       <div class="form-group col-md-3">
       </div>
     </div> 
-
+    @if(isset($item->id))
     <div class="form-row">
       <div class="form-group col-md-2 "></div>
       <div class="form-group col-md-6">
@@ -121,7 +121,7 @@
       <div class="form-group col-md-3">
       </div>
     </div> 
-        
+    @endif
     <div class="form-row">
       <div class="form-group col-md-2"></div>
       <div class="form-group col-md-6">
