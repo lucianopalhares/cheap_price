@@ -155,8 +155,8 @@ return [
         'password' => 'Senha',
         'category' => 'Categoria',
         'category_id' => 'Categoria',
-        'sub_category' => 'SubCategoria',
-        'sub_category_id' => 'SubCategoria',
+        'sub_category' => 'Sub-Categoria',
+        'sub_category_id' => 'Sub-Categoria',
         'type' => 'Tipo de Categoria',
         'type_id' => 'Tipo de Categoria',
         'brand' => 'Marca',
@@ -174,6 +174,8 @@ return [
         'date_end' => 'Data Final',
         'product_id' => 'Produto',
         'product' => 'Produto',
+        'model' => 'Modelo'
+        
     ],
 
 ];

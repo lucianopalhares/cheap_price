@@ -179,7 +179,28 @@
                   </ul>
                 </div>
               </li>
-                                                                    
+
+              <li class="nav-item" >
+                <a class="nav-link {{ (request()->is('admin/product/*')) ? 'active' : '' }} {{ (request()->is('admin/product')) ? 'active' : '' }}" data-toggle="collapse" href="#componentsCollapseProduct" aria-expanded="false">
+                  <span data-feather="grid"></span>
+                  {{trans('app.product')}}
+                </a>
+                <div class="collapse {{ (request()->is('admin/product/*')) ? 'show' : '' }} {{ (request()->is('admin/product')) ? 'show' : '' }}" id="componentsCollapseProduct">
+                  <ul class="nav">
+                    <li class="nav-item">
+                      <a class="nav-link {{ (request()->is('admin/product')) ? 'active' : '' }}" href="{{url('/admin/product')}}">
+                        &nbsp;<span data-feather="arrow-right"></span>&nbsp;{{trans('app.products')}}
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link {{ (request()->is('admin/product/create')) ? 'active' : '' }}" href="{{url('/admin/product/create')}}">
+                        &nbsp;<span data-feather="arrow-right"></span>&nbsp;{{trans('app.create')}} {{trans('app.product')}}
+                      </a>
+                    </li>                    
+                  </ul>
+                </div>
+              </li>
+                                                                                  
             </ul>
           </div>
         </nav>

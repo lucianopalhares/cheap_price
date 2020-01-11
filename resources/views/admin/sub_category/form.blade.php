@@ -49,7 +49,7 @@
             {{trans('app.select')}} {{trans('validation.attributes.category_id')}}
           </option>
           @foreach($categories as $category)
-            <option value="{{$category->id}}" {{ old('category_id') == $category->id ? "selected='selected'" : isset($item->category_id) && $item->category_id == $type->id ? "selected='selected'" : '' }}>
+            <option value="{{$category->id}}" {{ old('category_id') == $category->id ? "selected='selected'" : isset($item->category_id) && $item->category_id == $category->id ? "selected='selected'" : '' }}>
               {{$category->name}}
             </option>
           @endforeach

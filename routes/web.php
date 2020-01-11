@@ -30,4 +30,5 @@ Route::group(['namespace' => 'Admin','prefix' => 'admin','middleware'=>'auth'],f
     Route::resource('/sub_category', 'SubCategoriesController');
     Route::resource('/measure', 'MeasuresController');
     Route::resource('/brand', 'BrandsController');
+    Route::resource('/product', 'ProductsController');
 });

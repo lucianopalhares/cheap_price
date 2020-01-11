@@ -22,8 +22,7 @@
     <tr>
       <th scope="col">#ID</th>
       <th scope="col">{{trans('app.name')}}</th>
-      <th scope="col">Slug</th>
-      <th scope="col">{{trans('app.category')}}</th>
+      <th scope="col">{{trans('app.image')}}</th>
       <th scope="col">
         <span data-feather="settings"></span>
       </th>
@@ -33,11 +32,12 @@
     @foreach($items as $item)
     <tr>
       <th scope="row">{{$item->id}}</th>
-      <td>{{$item->name}}</td>
-      <td>{{$item->slug}}</td>
-      <td>{{$item->category->name}}</td>
       <td>
-        <a href="{{url('admin/sub_category/'.$item->id.'/edit')}}" class="text-primary"><span data-feather="edit"></span></a>
+      {{$item->subCategory->name}}->{{$item->model}}->{{$item->brand_id?$item->brand->name:' '}}->{{$item->measure_number}} {{$item->measure->abbrev}}
+
+      <td>{{$item->image}}</td>
+      <td>
+        <a href="{{url('admin/product/'.$item->id.'/edit')}}" class="text-primary"><span data-feather="edit"></span></a>
         <a href="#" class="text-danger" id="delete_item" data-id="{{ $item->id }}"><span data-feather="trash"></span></a>
                
       </td>
@@ -71,7 +71,7 @@
         if (confirm("{{trans('app.are_you_sure')}}")) {
           
           $.ajax({
-            url: "sub_category/"+id, //or you can use url: "company/"+id,
+            url: "product/"+id, //or you can use url: "company/"+id,
             type: 'DELETE',
             dataType: "json",
             data: {

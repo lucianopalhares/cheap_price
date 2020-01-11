@@ -47,5 +47,7 @@ return [
     'already_exists' => 'Já Existe!',
     'logout' => 'Sair',
     'are_you_sure' => 'Você tem certeza?',
-
+    'image' => 'Imagem',
+    'valid_extension_msg'   => 'are only valid extension',
+    'image_not_uploaded'  =>  '(OBS: imagem não foi salva)',
 ];
