@@ -26,4 +26,7 @@ class Product extends Model
     public function prices(){
       return $this->hasMany('App\Price','product_id');
     } 
+    public function name(){
+      return $this->subCategory->name;
+    }
 }
