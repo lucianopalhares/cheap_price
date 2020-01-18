@@ -50,4 +50,7 @@ return [
     'image' => 'Imagem',
     'valid_extension_msg'   => 'are only valid extension',
     'image_not_uploaded'  =>  '(OBS: imagem não foi salva)',
+    'date' => 'Data',
+    'until' => 'até',
+    'create_company' => 'Crie um Estabelecimento',
 ];

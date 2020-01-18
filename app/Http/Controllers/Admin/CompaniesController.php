@@ -9,22 +9,16 @@ use Illuminate\Validation\ValidationException;
 use Exception;
 use Illuminate\Validation\Rule;
 use \App;
-use \Carbon\Carbon;
 use Auth;
 
-class PricesController extends Controller
+class CompaniesController extends Controller
 {
     protected $model;
-    protected $company;
-    protected $product;
+    protected $companyType;
     
     public function __construct(){
-      
-      $this->middleware('company', ['only' => ['create','edit']]);
-      
-      $this->company = App::make('App\Company');
-      $this->product = App::make('App\Product');
-      $this->model = App::make('App\Price');
+      $this->model = App::make('App\Company');
+      $this->companyType = App::make('App\CompanyType');
     }
     /**
      * Display a listing of the resource.
@@ -34,7 +28,7 @@ class PricesController extends Controller
     public function index()
     {
         $items = $this->model::paginate(10);
-        return view('admin.price.index',compact('items'));
+        return view('admin.company.index',compact('items'));
     }
 
     /**
@@ -43,10 +37,9 @@ class PricesController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {        
-        $products = $this->product::all();
-        $companies = $this->company::all();
-        return view('admin.price.form',compact('products','companies'));
+    {
+        $companyTypes = $this->companyType::all();
+        return view('admin.company.form',compact('companyTypes'));
     }
 
     /**
@@ -66,26 +59,21 @@ class PricesController extends Controller
         if($update){
           
           $rules = [
-              'price' => 'required|regex:/^\d+(\.\d{1,2})?$/',
-              'date_start' => 'nullable|date_format:d/m/Y',
-              'date_end' => 'nullable|date_format:d/m/Y',
-              'product_id' => 'required'
+              'name' =>  'required|max:100',
+              'company_type_id' => 'required'
           ];            
           
         }else{
           
           $rules = [
-              'price' => 'required|regex:/^\d+(\.\d{1,2})?$/',
-              'date_start' => 'nullable|date_format:d/m/Y',
-              'date_end' => 'nullable|date_format:d/m/Y',
-              'product_id' => 'required'
+              'name' =>  'required|max:100',
+              'company_type_id' => 'required'
           ];          
         }
 
         $this->validate($request, $rules);
 
-        $product = $this->product->findOrFail($request->product_id);
-        $slug = str_slug($product->name().'-'.$request->price.'-'.$request->date_start.'ate'.$request->date_end);
+        $slug = str_slug($request->name);
 
         try {
 
@@ -94,19 +82,15 @@ class PricesController extends Controller
                 $model = $this->model->findOrFail($request->id);
                 
             }else{
-                $model = new App\Price;
+                $model = new App\Company;
             }
-            $model->price = $request->price;
-            $model->date_start = Carbon::createFromFormat('d/m/Y', $request->date_start)->format('Y-m-d');
-            $model->date_end = Carbon::createFromFormat('d/m/Y', $request->date_end)->format('Y-m-d');
-            $model->slug = $slug;
-            $model->product_id = $request->product_id;  
-            $model->company_id = Auth::user()->company->id;
-            $model->status = $request->status;  
-                        
+            $model->name = $request->name;
+            $model->company_type_id = $request->company_type_id;
+            $model->user_id = Auth::user()->id;
+            
             $save = $model->save();
             
-            $response = trans('app.price').' ';
+            $response = trans('app.company').' ';
             
             if($update){
               $response .= trans('app.updated_success');
@@ -161,9 +145,8 @@ class PricesController extends Controller
         try {
           
             $item = $this->model->findOrFail($id);
-            $products = $this->product::all();
-            $companies = $this->company::all();
-            return view('admin.price.form',compact('item','products','companies'));
+            $companyTypes = $this->companyType::all();
+            return view('admin.company.form',compact('item','companyTypes'));  
             
         } catch (\Exception $e) {//errors exceptions
           
@@ -178,7 +161,7 @@ class PricesController extends Controller
             if (request()->wantsJson()) {
               return response()->json(['status'=>false,'msg'=>$response]);
             }else{
-              return redirect('/admin/price')->withErrors($response);
+              return redirect('/admin/company')->withErrors($response);
             }  
           
         }   
@@ -212,7 +195,7 @@ class PricesController extends Controller
             
             $deleted = $this->model->destroy($id); 
             
-            $response = trans('app.price').' '.trans('app.deleted_success');
+            $response = trans('app.company').' '.trans('app.deleted_success');
                                                 
             if (request()->wantsJson()) {
               return response()->json(['status'=>true,'msg'=>$response]);
@@ -233,7 +216,7 @@ class PricesController extends Controller
             if (request()->wantsJson()) {
               return response()->json(['status'=>false,'msg'=>$response]);
             }else{
-              return redirect('/admin/price')->withErrors($response);
+              return redirect('/admin/company')->withErrors($response);
             }  
           
         }  

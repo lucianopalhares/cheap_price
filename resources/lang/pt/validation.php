@@ -91,11 +91,11 @@ return [
         'array' => 'O campo :attribute deve ter pelo menos :min items.',
     ],
     'not_in' => 'O campo :attribute selecionado é invalido.',
-    'not_regex' => 'The :attribute format is invalid.',
+    'not_regex' => 'Formato inválido no campo :attribute .',
     'numeric' => 'O campo :attribute deve ser um numero.',
     'password' => 'A senha esta incorreta.',
     'present' => 'The :attribute field must be present.',
-    'regex' => 'The :attribute format is invalid.',
+    'regex' => 'Formato inválido no campo :attribute .',
     'required' => 'O campo :attribute é obrigatório.',
     'required_if' => 'O campo :attribute é obrigatório quando :other é :value.',
     'required_unless' => 'O campo :attribute é obrigatório a não ser que :other é :values.',
@@ -174,8 +174,8 @@ return [
         'date_end' => 'Data Final',
         'product_id' => 'Produto',
         'product' => 'Produto',
-        'model' => 'Modelo'
-        
+        'model' => 'Modelo',
+        'company_id' => 'Estabelecimento'
     ],
 
 ];

@@ -75,6 +75,28 @@
             </h6>
             <ul class="nav flex-column mb-2">
 
+
+              <li class="nav-item" >
+                <a class="nav-link {{ (request()->is('admin/company/*')) ? 'active' : '' }} {{ (request()->is('admin/company')) ? 'active' : '' }}" data-toggle="collapse" href="#componentsCollapseCompany" aria-expanded="false">
+                  <span data-feather="grid"></span>
+                  {{trans('app.company')}}
+                </a>
+                <div class="collapse {{ (request()->is('admin/company/*')) ? 'show' : '' }} {{ (request()->is('admin/company')) ? 'show' : '' }}" id="componentsCollapseCompany">
+                  <ul class="nav">
+                    <li class="nav-item">
+                      <a class="nav-link {{ (request()->is('admin/company')) ? 'active' : '' }}" href="{{url('/admin/company')}}">
+                        &nbsp;<span data-feather="arrow-right"></span>&nbsp;{{trans('app.companies')}}
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link {{ (request()->is('admin/company/create')) ? 'active' : '' }}" href="{{url('/admin/company/create')}}">
+                        &nbsp;<span data-feather="arrow-right"></span>&nbsp;{{trans('app.create')}} {{trans('app.company')}}
+                      </a>
+                    </li>                    
+                  </ul>
+                </div>
+              </li>
+              
               <li class="nav-item" >
                 <a class="nav-link {{ (request()->is('admin/type/*')) ? 'active' : '' }} {{ (request()->is('admin/type')) ? 'active' : '' }}" data-toggle="collapse" href="#componentsCollapseType" aria-expanded="false">
                   <span data-feather="grid"></span>
@@ -200,7 +222,28 @@
                   </ul>
                 </div>
               </li>
-                                                                                  
+
+              <li class="nav-item" >
+                <a class="nav-link {{ (request()->is('admin/price/*')) ? 'active' : '' }} {{ (request()->is('admin/price')) ? 'active' : '' }}" data-toggle="collapse" href="#componentsCollapsePrice" aria-expanded="false">
+                  <span data-feather="grid"></span>
+                  {{trans('app.price')}}
+                </a>
+                <div class="collapse {{ (request()->is('admin/price/*')) ? 'show' : '' }} {{ (request()->is('admin/price')) ? 'show' : '' }}" id="componentsCollapsePrice">
+                  <ul class="nav">
+                    <li class="nav-item">
+                      <a class="nav-link {{ (request()->is('admin/price')) ? 'active' : '' }}" href="{{url('/admin/price')}}">
+                        &nbsp;<span data-feather="arrow-right"></span>&nbsp;{{trans('app.prices')}}
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link {{ (request()->is('admin/price/create')) ? 'active' : '' }}" href="{{url('/admin/price/create')}}">
+                        &nbsp;<span data-feather="arrow-right"></span>&nbsp;{{trans('app.create')}} {{trans('app.price')}}
+                      </a>
+                    </li>                    
+                  </ul>
+                </div>
+              </li>
+                                                                                                
             </ul>
           </div>
         </nav>

@@ -25,6 +25,7 @@
     },
     "dependencies": {
         "bootstrap-select": "^1.13.12",
-        "feather-icons": "^4.25.0"
+        "feather-icons": "^4.25.0",
+        "moment": "^2.24.0"
     }
 }

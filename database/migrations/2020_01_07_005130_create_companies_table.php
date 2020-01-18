@@ -15,6 +15,7 @@ class CreateCompaniesTable extends Migration
     {
         Schema::create('companies', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('name');
             $table->unsignedBigInteger('company_type_id');
             $table->foreign('company_type_id')->references('id')->on('company_types');  
             $table->unsignedBigInteger('user_id');

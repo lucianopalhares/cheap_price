@@ -11,6 +11,9 @@ feather.replace();
 
 require('bootstrap-select');
 
+import moment from 'moment';
+window.moment = moment;
+
 require('./bootstrap');
 
 window.Vue = require('vue');
