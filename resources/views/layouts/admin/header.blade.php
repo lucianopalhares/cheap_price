@@ -88,11 +88,21 @@
                         &nbsp;<span data-feather="arrow-right"></span>&nbsp;{{trans('app.companies')}}
                       </a>
                     </li>
+                    @if(!Auth::user()->isAdmin() && Auth::user()->company()->count()==0) 
+                          
                     <li class="nav-item">
                       <a class="nav-link {{ (request()->is('admin/company/create')) ? 'active' : '' }}" href="{{url('/admin/company/create')}}">
                         &nbsp;<span data-feather="arrow-right"></span>&nbsp;{{trans('app.create')}} {{trans('app.company')}}
                       </a>
-                    </li>                    
+                    </li>   
+                    @endif 
+                    @if(Auth::user()->isAdmin())   
+                    <li class="nav-item">
+                      <a class="nav-link {{ (request()->is('admin/company/create')) ? 'active' : '' }}" href="{{url('/admin/company/create')}}">
+                        &nbsp;<span data-feather="arrow-right"></span>&nbsp;{{trans('app.create')}} {{trans('app.company')}}
+                      </a>
+                    </li>  
+                    @endif                                  
                   </ul>
                 </div>
               </li>

@@ -14,6 +14,7 @@ use Intervention\Image\Facades\Image;
 
 class ProductsController extends Controller
 {
+    protected $title;
     protected $model;
     protected $type;
     protected $category;
@@ -22,6 +23,7 @@ class ProductsController extends Controller
     protected $measure;
     
     public function __construct(){
+      $this->title = trans('app.product');
       $this->model = App::make('App\Product');
       $this->type = App::make('App\Type');
       $this->category = App::make('App\Category');
@@ -297,7 +299,6 @@ class ProductsController extends Controller
      */
     public function destroy($id)
     {
-        try {
           
             $model = $this->model->findOrFail($id);
 
@@ -311,7 +312,7 @@ class ProductsController extends Controller
                     
             $deleted = $this->model->destroy($id); 
             
-            $response = trans('app.product').' '.trans('app.deleted_success');
+            $response = $this->title.' '.trans('app.deleted_success');
                                                 
             if (request()->wantsJson()) {
               return response()->json(['status'=>true,'msg'=>$response]);
@@ -319,23 +320,7 @@ class ProductsController extends Controller
               return back()->with('success', $response);
             }    
             
-        } catch (\Exception $e) {//errors exceptions
-          
-            $response = null;
-            
-            switch (get_class($e)) {
-              case QueryException::class:$response = $e->getMessage();
-              case Exception::class:$response = $e->getMessage();
-              default: $response = get_class($e);
-            }              
-            
-            if (request()->wantsJson()) {
-              return response()->json(['status'=>false,'msg'=>$response]);
-            }else{
-              return redirect('/admin/product')->withErrors($response);
-            }  
-          
-        }  
+   
     }
 
 }

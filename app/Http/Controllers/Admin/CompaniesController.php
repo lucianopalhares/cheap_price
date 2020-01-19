@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Database\QueryException;
 use Illuminate\Validation\ValidationException;
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException as ModelNotFoundException;
 use Illuminate\Validation\Rule;
 use \App;
 use Auth;
@@ -27,8 +28,13 @@ class CompaniesController extends Controller
      */
     public function index()
     {
-        $items = $this->model::paginate(10);
-        return view('admin.company.index',compact('items'));
+        if (Auth::user()->isAdmin()) {
+          $items = $this->model::paginate(10);
+          return view('admin.company.index',compact('items'));
+        }else{
+          $items = $this->model::whereUserId(Auth::user()->id)->paginate(10);
+          return view('admin.company.index',compact('items'));
+        }
     }
 
     /**
@@ -38,6 +44,9 @@ class CompaniesController extends Controller
      */
     public function create()
     {
+        if (!Auth::user()->isAdmin() && Auth::user()->company()->count()>0) {
+          return back()->withErrors(trans('app.has_company'));
+        }
         $companyTypes = $this->companyType::all();
         return view('admin.company.form',compact('companyTypes'));
     }
@@ -142,31 +151,16 @@ class CompaniesController extends Controller
      */
     public function edit($id)
     {       
-        try {
-          
-            $item = $this->model->findOrFail($id);
-            $companyTypes = $this->companyType::all();
-            return view('admin.company.form',compact('item','companyTypes'));  
-            
-        } catch (\Exception $e) {//errors exceptions
-          
-            $response = null;
-            
-            switch (get_class($e)) {
-              case QueryException::class:$response = $e->getMessage();
-              case Exception::class:$response = $e->getMessage();
-              default: $response = get_class($e);
-            }              
-            
-            if (request()->wantsJson()) {
-              return response()->json(['status'=>false,'msg'=>$response]);
-            }else{
-              return redirect('/admin/company')->withErrors($response);
-            }  
-          
-        }   
+        $item = $this->model->findOrFail($id);
 
-
+        if (!Auth::user()->isAdmin()) {
+          if (Auth::user()->company->id != $item->id) {
+            return back()->withErrors(trans('app.notyour_company'));
+          }
+        }  
+            
+        $companyTypes = $this->companyType::all();
+        return view('admin.company.form',compact('item','companyTypes'));  
     }
 
     /**
@@ -189,8 +183,6 @@ class CompaniesController extends Controller
      */
     public function destroy($id)
     {
-        try {
-          
             $model = $this->model->findOrFail($id);
             
             $deleted = $this->model->destroy($id); 
@@ -202,23 +194,6 @@ class CompaniesController extends Controller
             }else{
               return back()->with('success', $response);
             }    
-            
-        } catch (\Exception $e) {//errors exceptions
-          
-            $response = null;
-            
-            switch (get_class($e)) {
-              case QueryException::class:$response = $e->getMessage();
-              case Exception::class:$response = $e->getMessage();
-              default: $response = get_class($e);
-            }              
-            
-            if (request()->wantsJson()) {
-              return response()->json(['status'=>false,'msg'=>$response]);
-            }else{
-              return redirect('/admin/company')->withErrors($response);
-            }  
-          
-        }  
+
     }
 }

@@ -4,6 +4,9 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
+use Illuminate\Validation\ValidationException;
 
 class Handler extends ExceptionHandler
 {
@@ -45,7 +48,33 @@ class Handler extends ExceptionHandler
      * @return \Illuminate\Http\Response
      */
     public function render($request, Exception $exception)
-    {
+    {        
+        $response = null;
+        
+        if ($exception instanceof ModelNotFoundException) {
+          $response = trans('app.not_found');  
+          //$response = 'Entry for '.str_replace('App\\', '', $exception->getModel()).' not found';          
+        }else if ($exception instanceof QueryException) {
+          $response = $exception->getMessage();
+        }else if ($exception instanceof ValidationException) {
+          $response = $exception->getMessage();
+        }else if ($exception instanceof Exception) {
+          $response = $exception->getMessage();
+        }else{
+          $response = $exception->getMessage();
+        }
+        
+        if (request()->wantsJson()) {
+          $arr['status'] = false;
+          $arr['msg'] = $response;
+          return response()->json($arr); 
+        }else{
+          if(isset($_GET['redirect'])&&strlen($_GET['redirect'])>0){
+            return redirect($_GET['redirect'])->withInput($request->toArray())->withErrors($response);
+          }else{
+            return back()->withInput($request->toArray())->withErrors($response);
+          }
+        }                      
         return parent::render($request, $exception);
     }
 }

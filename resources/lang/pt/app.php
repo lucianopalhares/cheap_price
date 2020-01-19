@@ -53,4 +53,9 @@ return [
     'date' => 'Data',
     'until' => 'até',
     'create_company' => 'Crie um Estabelecimento',
+    'has_company' => 'Você ja tem um Estabelecimento!',
+    'notyour_company' => 'Este Estabelecimento não é seu!',
+    'not_exists' => 'não existe!',
+    'not_found' => 'Não Encontrado(a) !',
+
 ];

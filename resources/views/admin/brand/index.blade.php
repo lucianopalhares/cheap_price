@@ -35,7 +35,7 @@
       <td>{{$item->name}}</td>
       <td>{{$item->slug}}</td>
       <td>
-        <a href="{{url('admin/brand/'.$item->id.'/edit')}}" class="text-primary"><span data-feather="edit"></span></a>
+        <a href="{{url('admin/brand/6/edit?redirect=/admin/brand')}}" class="text-primary"><span data-feather="edit"></span></a>
         
         @if(!$item->products()->exists())
           <a href="#" class="text-danger" id="delete_item" data-id="{{ $item->id }}"><span data-feather="trash"></span></a>

@@ -112,7 +112,7 @@
 
             <ul class="nav navbar-nav navbar-right">
 
-              <li><a href=""> <i class="fa fa-lock"></i>  login  </a>  </li>
+              <li><a href="{{url('/login')}}"> <i class="fa fa-lock"></i>  login  </a>  </li>
               
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Idioma <span class="caret"></span></a>

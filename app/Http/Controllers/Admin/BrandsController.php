@@ -13,8 +13,10 @@ use \App;
 class BrandsController extends Controller
 {
     protected $model;
+    protected $title;
     
     public function __construct(){
+      $this->title = trans('app.brand');
       $this->model = App::make('App\Brand');
     }
     /**
@@ -69,52 +71,32 @@ class BrandsController extends Controller
 
         $slug = str_slug($request->name);
 
-        try {
+        if($update){
 
-            if($update){
-
-                $model = $this->model->findOrFail($request->id);
+            $model = $this->model->findOrFail($request->id);
                 
-            }else{
-                $model = new App\Brand;
-            }
-            $model->name = $request->name;
-            $model->slug = $slug;  
+        }else{
+            $model = new App\Brand;
+        }
+        $model->name = $request->name;
+        $model->slug = $slug;  
             
-            $save = $model->save();
+        $save = $model->save();
             
-            $response = trans('app.brand').' ';
+        $response = $this->title.' ';
             
-            if($update){
-              $response .= trans('app.updated_success');
-            }else{
-              $response .= trans('app.created_success');
-            }
+        if($update){
+          $response .= trans('app.updated_success');
+        }else{
+          $response .= trans('app.created_success');
+        }
             
-            if (request()->wantsJson()) {
-              return response()->json(['status'=>true,'msg'=>$response]);
-            }else{
-              return back()->with('success', $response);
-            }            
-            
-        } catch (\Exception $e) {//errors exceptions
-          
-            $response = null;
-            
-            switch (get_class($e)) {
-              case QueryException::class:$response = $e->getMessage();
-              case Exception::class:$response = $e->getMessage();
-              case ValidationException::class:$response = $e;
-              default: $response = get_class($e);
-            }              
-            
-            if (request()->wantsJson()) {
-              return response()->json(['status'=>false,'msg'=>$response]);
-            }else{
-              return back()->withInput($request->toArray())->withErrors($response);
-            }  
-          
-        }    
+        if (request()->wantsJson()) {
+          return response()->json(['status'=>true,'msg'=>$response]);
+        }else{
+          return back()->with('success', $response);
+        }            
+              
     }
     /**
      * Display the specified resource.
@@ -134,30 +116,10 @@ class BrandsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {       
-        try {
-          
-            $item = $this->model->findOrFail($id);
-            return view('admin.brand.form',compact('item'));  
-            
-        } catch (\Exception $e) {//errors exceptions
-          
-            $response = null;
-            
-            switch (get_class($e)) {
-              case QueryException::class:$response = $e->getMessage();
-              case Exception::class:$response = $e->getMessage();
-              default: $response = get_class($e);
-            }              
-            
-            if (request()->wantsJson()) {
-              return response()->json(['status'=>false,'msg'=>$response]);
-            }else{
-              return redirect('/admin/brand')->withErrors($response);
-            }  
-          
-        }   
-
+    {                 
+        $item = $this->model->findOrFail($id);
+        $show = true;
+        return view('admin.brand.form',compact('item','show'));    
 
     }
 
@@ -180,37 +142,17 @@ class BrandsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-    {
-        try {
-          
-            $model = $this->model->findOrFail($id);
+    {          
+        $model = $this->model->findOrFail($id);
             
-            $deleted = $this->model->destroy($id); 
+        $deleted = $this->model->destroy($id); 
             
-            $response = trans('app.brand').' '.trans('app.deleted_success');
+        $response = $this->title.' '.trans('app.deleted_success');
                                                 
-            if (request()->wantsJson()) {
-              return response()->json(['status'=>true,'msg'=>$response]);
-            }else{
-              return back()->with('success', $response);
-            }    
-            
-        } catch (\Exception $e) {//errors exceptions
-          
-            $response = null;
-            
-            switch (get_class($e)) {
-              case QueryException::class:$response = $e->getMessage();
-              case Exception::class:$response = $e->getMessage();
-              default: $response = get_class($e);
-            }              
-            
-            if (request()->wantsJson()) {
-              return response()->json(['status'=>false,'msg'=>$response]);
-            }else{
-              return redirect('/admin/brand')->withErrors($response);
-            }  
-          
-        }  
+        if (request()->wantsJson()) {
+          return response()->json(['status'=>true,'msg'=>$response]);
+        }else{
+          return back()->with('success', $response);
+        }       
     }
 }
