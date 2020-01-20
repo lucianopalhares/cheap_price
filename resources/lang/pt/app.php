@@ -39,6 +39,7 @@ return [
     'save' => 'Salvar',
     'create' => 'Cadastrar',
     'edit' => 'Editar',
+    'show' => 'Mostrar',
     'delete' => 'Deletar',  
     'created_success' => 'Cadastrado(a) com Sucesso!',
     'updated_success' => 'Atualizado(a) com Sucesso!',

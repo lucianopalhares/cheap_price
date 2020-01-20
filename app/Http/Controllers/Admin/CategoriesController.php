@@ -14,8 +14,12 @@ class CategoriesController extends Controller
 {
     protected $model;
     protected $type;
+    protected $title;
+    protected $path_view;
     
     public function __construct(){
+      $this->title = trans('app.category');
+      $this->path_view = 'admin.category';
       $this->type = App::make('App\Type');
       $this->model = App::make('App\Category');
     }
@@ -27,7 +31,7 @@ class CategoriesController extends Controller
     public function index()
     {
         $items = $this->model::paginate(10);
-        return view('admin.category.index',compact('items'));
+        return view($this->path_view.'.index',compact('items'));
     }
 
     /**
@@ -38,7 +42,7 @@ class CategoriesController extends Controller
     public function create()
     {
         $types = $this->type::all();
-        return view('admin.category.form',compact('types'));
+        return view($this->path_view.'.form',compact('types'));
     }
 
     /**
@@ -74,53 +78,32 @@ class CategoriesController extends Controller
 
         $slug = str_slug($request->name);
 
-        try {
+        if($update){
 
-            if($update){
-
-                $model = $this->model->findOrFail($request->id);
+          $model = $this->model->findOrFail($request->id);
                 
-            }else{
-                $model = new App\Category;
-            }
-            $model->name = $request->name;
-            $model->slug = $slug;
-            $model->type_id = $request->type_id;   
+        }else{
+          $model = new App\Category;
+        }
+        $model->name = $request->name;
+        $model->slug = $slug;
+        $model->type_id = $request->type_id;   
             
-            $save = $model->save();
+        $save = $model->save();
             
-            $response = trans('app.category').' ';
+        $response = $this->title.' ';
             
-            if($update){
-              $response .= trans('app.updated_success');
-            }else{
-              $response .= trans('app.created_success');
-            }
+        if($update){
+          $response .= trans('app.updated_success');
+        }else{
+          $response .= trans('app.created_success');
+        }
             
-            if (request()->wantsJson()) {
-              return response()->json(['status'=>true,'msg'=>$response]);
-            }else{
-              return back()->with('success', $response);
-            }            
-            
-        } catch (\Exception $e) {//errors exceptions
-          
-            $response = null;
-            
-            switch (get_class($e)) {
-              case QueryException::class:$response = $e->getMessage();
-              case Exception::class:$response = $e->getMessage();
-              case ValidationException::class:$response = $e;
-              default: $response = get_class($e);
-            }              
-            
-            if (request()->wantsJson()) {
-              return response()->json(['status'=>false,'msg'=>$response]);
-            }else{
-              return back()->withInput($request->toArray())->withErrors($response);
-            }  
-          
-        }    
+        if (request()->wantsJson()) {
+          return response()->json(['status'=>true,'msg'=>$response]);
+        }else{
+          return back()->with('success', $response);
+        }               
     }
     /**
      * Display the specified resource.
@@ -130,7 +113,10 @@ class CategoriesController extends Controller
      */
     public function show($id)
     {
-        //
+        $show = true;
+        $item = $this->model->findOrFail($id);
+        $types = $this->type::all();
+        return view($this->path_view.'.form',compact('types','item','show')); 
     }
 
     /**
@@ -141,31 +127,9 @@ class CategoriesController extends Controller
      */
     public function edit($id)
     {       
-        try {
-          
-            $item = $this->model->findOrFail($id);
-            $types = $this->type::all();
-            return view('admin.category.form',compact('types','item'));  
-            
-        } catch (\Exception $e) {//errors exceptions
-          
-            $response = null;
-            
-            switch (get_class($e)) {
-              case QueryException::class:$response = $e->getMessage();
-              case Exception::class:$response = $e->getMessage();
-              default: $response = get_class($e);
-            }              
-            
-            if (request()->wantsJson()) {
-              return response()->json(['status'=>false,'msg'=>$response]);
-            }else{
-              return redirect('/admin/category')->withErrors($response);
-            }  
-          
-        }   
-
-
+        $item = $this->model->findOrFail($id);
+        $types = $this->type::all();
+        return view($this->path_view.'.form',compact('types','item'));  
     }
 
     /**
@@ -188,36 +152,16 @@ class CategoriesController extends Controller
      */
     public function destroy($id)
     {
-        try {
-          
-            $model = $this->model->findOrFail($id);
+        $model = $this->model->findOrFail($id);
             
-            $deleted = $this->model->destroy($id); 
+        $deleted = $this->model->destroy($id); 
             
-            $response = trans('app.category').' '.trans('app.deleted_success');
+        $response = $this->title.' '.trans('app.deleted_success');
                                                 
-            if (request()->wantsJson()) {
-              return response()->json(['status'=>true,'msg'=>$response]);
-            }else{
-              return back()->with('success', $response);
-            }    
-            
-        } catch (\Exception $e) {//errors exceptions
-          
-            $response = null;
-            
-            switch (get_class($e)) {
-              case QueryException::class:$response = $e->getMessage();
-              case Exception::class:$response = $e->getMessage();
-              default: $response = get_class($e);
-            }              
-            
-            if (request()->wantsJson()) {
-              return response()->json(['status'=>false,'msg'=>$response]);
-            }else{
-              return redirect('/admin/category')->withErrors($response);
-            }  
-          
-        }  
+        if (request()->wantsJson()) {
+          return response()->json(['status'=>true,'msg'=>$response]);
+        }else{
+          return back()->with('success', $response);
+        }    
     }
 }

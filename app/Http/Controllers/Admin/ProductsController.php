@@ -14,16 +14,18 @@ use Intervention\Image\Facades\Image;
 
 class ProductsController extends Controller
 {
-    protected $title;
     protected $model;
     protected $type;
     protected $category;
     protected $sub_category;
     protected $brand;
     protected $measure;
+    protected $title;
+    protected $path_view;
     
     public function __construct(){
       $this->title = trans('app.product');
+      $this->path_view = 'admin.product'; 
       $this->model = App::make('App\Product');
       $this->type = App::make('App\Type');
       $this->category = App::make('App\Category');
@@ -39,7 +41,7 @@ class ProductsController extends Controller
     public function index()
     {
         $items = $this->model::paginate(10);
-        return view('admin.product.index',compact('items'));
+        return view($this->path_view.'.index',compact('items'));
     }
 
     /**
@@ -55,7 +57,7 @@ class ProductsController extends Controller
         $brands = $this->brand::all();
         $measures = $this->measure::all();
         
-        return view('admin.product.form',compact('sub_categories','brands','measures'));
+        return view($this->path_view.'.form',compact('sub_categories','brands','measures'));
     }
 
     /**
@@ -93,10 +95,6 @@ class ProductsController extends Controller
 
         $this->validate($request, $rules);
         
-        
-
-        try {
-
             if($update){
 
                 $model = $this->model->findOrFail($request->id);
@@ -129,7 +127,7 @@ class ProductsController extends Controller
             }        
             $model->save();
             
-            $response = trans('app.product').' ';
+            $response = $this->title.' ';
             
             if($update){
               $response .= trans('app.updated_success');
@@ -207,26 +205,7 @@ class ProductsController extends Controller
               return response()->json(['status'=>true,'msg'=>$response]);
             }else{
               return back()->with('success', $response);
-            }            
-            
-        } catch (\Exception $e) {//errors exceptions
-          
-            $response = null;
-            
-            switch (get_class($e)) {
-              case QueryException::class:$response = $e->getMessage();
-              case Exception::class:$response = $e->getMessage();
-              case ValidationException::class:$response = $e;
-              default: $response = get_class($e);
-            }              
-            
-            if (request()->wantsJson()) {
-              return response()->json(['status'=>false,'msg'=>$response]);
-            }else{
-              return back()->withInput($request->toArray())->withErrors($response);
-            }  
-          
-        }    
+            }               
     }
     /**
      * Display the specified resource.
@@ -236,7 +215,15 @@ class ProductsController extends Controller
      */
     public function show($id)
     {
-        //
+        $show = true;
+        $item = $this->model->findOrFail($id);
+        $types = $this->type::all();
+        $categories = $this->category::all();
+        $sub_categories = $this->sub_category::all();
+        $brands = $this->brand::all();
+        $measures = $this->measure::all();
+        
+        return view($this->path_view.'.form',compact('item','sub_categories','brands','measures','show'));
     }
 
     /**
@@ -246,37 +233,15 @@ class ProductsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {       
-        try {
-          
-            $item = $this->model->findOrFail($id);
-            $types = $this->type::all();
-            $categories = $this->category::all();
-            $sub_categories = $this->sub_category::all();
-            $brands = $this->brand::all();
-            $measures = $this->measure::all();
+    {      
+        $item = $this->model->findOrFail($id);
+        $types = $this->type::all();
+        $categories = $this->category::all();
+        $sub_categories = $this->sub_category::all();
+        $brands = $this->brand::all();
+        $measures = $this->measure::all();
         
-            return view('admin.product.form',compact('item','sub_categories','brands','measures'));
-            
-        } catch (\Exception $e) {//errors exceptions
-          
-            $response = null;
-            
-            switch (get_class($e)) {
-              case QueryException::class:$response = $e->getMessage();
-              case Exception::class:$response = $e->getMessage();
-              default: $response = get_class($e);
-            }              
-            
-            if (request()->wantsJson()) {
-              return response()->json(['status'=>false,'msg'=>$response]);
-            }else{
-              return redirect('/admin/brand')->withErrors($response);
-            }  
-          
-        }   
-
-
+        return view($this->path_view.'.form',compact('item','sub_categories','brands','measures'));
     }
 
     /**

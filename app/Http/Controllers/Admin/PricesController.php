@@ -17,11 +17,15 @@ class PricesController extends Controller
     protected $model;
     protected $company;
     protected $product;
+    protected $title;
+    protected $path_view;
     
     public function __construct(){
       
       $this->middleware('company', ['only' => ['create','edit']]);
-      
+
+      $this->title = trans('app.price');
+      $this->path_view = 'admin.price';      
       $this->company = App::make('App\Company');
       $this->product = App::make('App\Product');
       $this->model = App::make('App\Price');
@@ -34,7 +38,7 @@ class PricesController extends Controller
     public function index()
     {
         $items = $this->model::paginate(10);
-        return view('admin.price.index',compact('items'));
+        return view($this->path_view.'.index',compact('items'));
     }
 
     /**
@@ -46,7 +50,7 @@ class PricesController extends Controller
     {        
         $products = $this->product::all();
         $companies = $this->company::all();
-        return view('admin.price.form',compact('products','companies'));
+        return view($this->path_view.'.form',compact('products','companies'));
     }
 
     /**
@@ -87,57 +91,36 @@ class PricesController extends Controller
         $product = $this->product->findOrFail($request->product_id);
         $slug = str_slug($product->name().'-'.$request->price.'-'.$request->date_start.'ate'.$request->date_end);
 
-        try {
+        if($update){
 
-            if($update){
-
-                $model = $this->model->findOrFail($request->id);
+            $model = $this->model->findOrFail($request->id);
                 
-            }else{
-                $model = new App\Price;
-            }
-            $model->price = $request->price;
-            $model->date_start = Carbon::createFromFormat('d/m/Y', $request->date_start)->format('Y-m-d');
-            $model->date_end = Carbon::createFromFormat('d/m/Y', $request->date_end)->format('Y-m-d');
-            $model->slug = $slug;
-            $model->product_id = $request->product_id;  
-            $model->company_id = Auth::user()->company->id;
-            $model->status = $request->status;  
+        }else{
+            $model = new App\Price;
+        }
+        $model->price = $request->price;
+        $model->date_start = Carbon::createFromFormat('d/m/Y', $request->date_start)->format('Y-m-d');
+        $model->date_end = Carbon::createFromFormat('d/m/Y', $request->date_end)->format('Y-m-d');
+        $model->slug = $slug;
+        $model->product_id = $request->product_id;  
+        $model->company_id = Auth::user()->company->id;
+        $model->status = $request->status;  
                         
-            $save = $model->save();
+        $save = $model->save();
             
-            $response = trans('app.price').' ';
+        $response = $this->title.' ';
             
-            if($update){
-              $response .= trans('app.updated_success');
-            }else{
-              $response .= trans('app.created_success');
-            }
+        if($update){
+          $response .= trans('app.updated_success');
+        }else{
+          $response .= trans('app.created_success');
+        }
             
-            if (request()->wantsJson()) {
-              return response()->json(['status'=>true,'msg'=>$response]);
-            }else{
-              return back()->with('success', $response);
-            }            
-            
-        } catch (\Exception $e) {//errors exceptions
-          
-            $response = null;
-            
-            switch (get_class($e)) {
-              case QueryException::class:$response = $e->getMessage();
-              case Exception::class:$response = $e->getMessage();
-              case ValidationException::class:$response = $e;
-              default: $response = get_class($e);
-            }              
-            
-            if (request()->wantsJson()) {
-              return response()->json(['status'=>false,'msg'=>$response]);
-            }else{
-              return back()->withInput($request->toArray())->withErrors($response);
-            }  
-          
-        }    
+        if (request()->wantsJson()) {
+          return response()->json(['status'=>true,'msg'=>$response]);
+        }else{
+          return back()->with('success', $response);
+        }               
     }
     /**
      * Display the specified resource.
@@ -147,7 +130,11 @@ class PricesController extends Controller
      */
     public function show($id)
     {
-        //
+        $show = true;
+        $item = $this->model->findOrFail($id);
+        $products = $this->product::all();
+        $companies = $this->company::all();
+        return view($this->path_view.'.form',compact('item','products','companies','show'));
     }
 
     /**
@@ -157,33 +144,11 @@ class PricesController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {       
-        try {
-          
-            $item = $this->model->findOrFail($id);
-            $products = $this->product::all();
-            $companies = $this->company::all();
-            return view('admin.price.form',compact('item','products','companies'));
-            
-        } catch (\Exception $e) {//errors exceptions
-          
-            $response = null;
-            
-            switch (get_class($e)) {
-              case QueryException::class:$response = $e->getMessage();
-              case Exception::class:$response = $e->getMessage();
-              default: $response = get_class($e);
-            }              
-            
-            if (request()->wantsJson()) {
-              return response()->json(['status'=>false,'msg'=>$response]);
-            }else{
-              return redirect('/admin/price')->withErrors($response);
-            }  
-          
-        }   
-
-
+    {                 
+        $item = $this->model->findOrFail($id);
+        $products = $this->product::all();
+        $companies = $this->company::all();
+        return view($this->path_view.'.form',compact('item','products','companies'));
     }
 
     /**
@@ -205,37 +170,17 @@ class PricesController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-    {
-        try {
-          
-            $model = $this->model->findOrFail($id);
+    {          
+        $model = $this->model->findOrFail($id);
             
-            $deleted = $this->model->destroy($id); 
+        $deleted = $this->model->destroy($id); 
             
-            $response = trans('app.price').' '.trans('app.deleted_success');
+        $response = $this->title.' '.trans('app.deleted_success');
                                                 
-            if (request()->wantsJson()) {
-              return response()->json(['status'=>true,'msg'=>$response]);
-            }else{
-              return back()->with('success', $response);
-            }    
-            
-        } catch (\Exception $e) {//errors exceptions
-          
-            $response = null;
-            
-            switch (get_class($e)) {
-              case QueryException::class:$response = $e->getMessage();
-              case Exception::class:$response = $e->getMessage();
-              default: $response = get_class($e);
-            }              
-            
-            if (request()->wantsJson()) {
-              return response()->json(['status'=>false,'msg'=>$response]);
-            }else{
-              return redirect('/admin/price')->withErrors($response);
-            }  
-          
-        }  
+        if (request()->wantsJson()) {
+          return response()->json(['status'=>true,'msg'=>$response]);
+        }else{
+          return back()->with('success', $response);
+        }    
     }
 }

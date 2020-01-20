@@ -14,9 +14,11 @@ class BrandsController extends Controller
 {
     protected $model;
     protected $title;
+    protected $path_view;
     
     public function __construct(){
       $this->title = trans('app.brand');
+      $this->path_view = 'admin.brand';
       $this->model = App::make('App\Brand');
     }
     /**
@@ -27,7 +29,7 @@ class BrandsController extends Controller
     public function index()
     {
         $items = $this->model::paginate(10);
-        return view('admin.brand.index',compact('items'));
+        return view($this->path_view.'.index',compact('items'));
     }
 
     /**
@@ -37,7 +39,7 @@ class BrandsController extends Controller
      */
     public function create()
     {
-        return view('admin.brand.form');
+        return view($this->path_view.'.form');
     }
 
     /**
@@ -106,7 +108,9 @@ class BrandsController extends Controller
      */
     public function show($id)
     {
-        //
+        $item = $this->model->findOrFail($id);
+        $show = true;
+        return view($this->path_view.'.index',compact('item','show'));  
     }
 
     /**
@@ -118,8 +122,7 @@ class BrandsController extends Controller
     public function edit($id)
     {                 
         $item = $this->model->findOrFail($id);
-        $show = true;
-        return view('admin.brand.form',compact('item','show'));    
+        return view($this->path_view.'.index',compact('item'));    
 
     }
 

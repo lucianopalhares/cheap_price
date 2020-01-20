@@ -37,7 +37,7 @@
       <td>
         <a href="{{url('admin/type/'.$item->id.'/edit')}}" class="text-primary"><span data-feather="edit"></span></a>
         
-        @if(!$item->categories()->exists())
+        @if($item->categories()->exists())
           <a href="#" class="text-danger" id="delete_item" data-id="{{ $item->id }}"><span data-feather="trash"></span></a>
         @endif       
       </td>
@@ -71,7 +71,7 @@
         if (confirm("{{trans('app.are_you_sure')}}")) {
           
           $.ajax({
-            url: "type/"+id, //or you can use url: "company/"+id,
+            url: "{{url('admin/type')}}"+"/"+id,
             type: 'DELETE',
             dataType: "json",
             data: {

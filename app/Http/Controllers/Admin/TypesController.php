@@ -13,8 +13,12 @@ use \App;
 class TypesController extends Controller
 {
     protected $model;
+    protected $title;
+    protected $path_view;
     
     public function __construct(){
+      $this->title = trans('app.type');
+      $this->path_view = 'admin.type'; 
       $this->model = App::make('App\Type');
     }
     /**
@@ -25,7 +29,7 @@ class TypesController extends Controller
     public function index()
     {
         $items = $this->model::paginate(10);
-        return view('admin.type.index',compact('items'));
+        return view($this->path_view.'.index',compact('items'));
     }
 
     /**
@@ -35,7 +39,7 @@ class TypesController extends Controller
      */
     public function create()
     {
-        return view('admin.type.form');
+        return view($this->path_view.'.form');
     }
 
     /**
@@ -69,8 +73,6 @@ class TypesController extends Controller
 
         $slug = str_slug($request->name);
 
-        try {
-
             if($update){
 
                 $model = $this->model->findOrFail($request->id);
@@ -96,25 +98,6 @@ class TypesController extends Controller
             }else{
               return back()->with('success', $response);
             }            
-            
-        } catch (\Exception $e) {//errors exceptions
-          
-            $response = null;
-            
-            switch (get_class($e)) {
-              case QueryException::class:$response = $e->getMessage();
-              case Exception::class:$response = $e->getMessage();
-              case ValidationException::class:$response = $e;
-              default: $response = get_class($e);
-            }              
-            
-            if (request()->wantsJson()) {
-              return response()->json(['status'=>false,'msg'=>$response]);
-            }else{
-              return back()->withInput($request->toArray())->withErrors($response);
-            }  
-          
-        }    
     }
     /**
      * Display the specified resource.
@@ -124,7 +107,9 @@ class TypesController extends Controller
      */
     public function show($id)
     {
-        //
+        $show = true;
+        $item = $this->model->findOrFail($id);
+        return view($this->path_view.'.form',compact('item','show'));  
     }
 
     /**
@@ -134,31 +119,9 @@ class TypesController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {       
-        try {
-          
-            $item = $this->model->findOrFail($id);
-            return view('admin.type.form',compact('item'));  
-            
-        } catch (\Exception $e) {//errors exceptions
-          
-            $response = null;
-            
-            switch (get_class($e)) {
-              case QueryException::class:$response = $e->getMessage();
-              case Exception::class:$response = $e->getMessage();
-              default: $response = get_class($e);
-            }              
-            
-            if (request()->wantsJson()) {
-              return response()->json(['status'=>false,'msg'=>$response]);
-            }else{
-              return redirect('/admin/type')->withErrors($response);
-            }  
-          
-        }   
-
-
+    {     
+        $item = $this->model->findOrFail($id);
+        return view($this->path_view.'.form',compact('item'));  
     }
 
     /**
@@ -181,36 +144,16 @@ class TypesController extends Controller
      */
     public function destroy($id)
     {
-        try {
-          
-            $model = $this->model->findOrFail($id);
+        $model = $this->model->findOrFail($id);
             
-            $deleted = $this->model->destroy($id); 
+        $deleted = $this->model->destroy($id); 
             
-            $response = trans('app.type').' '.trans('app.deleted_success');
+        $response = $this->title.' '.trans('app.deleted_success');
                                                 
-            if (request()->wantsJson()) {
-              return response()->json(['status'=>true,'msg'=>$response]);
-            }else{
-              return back()->with('success', $response);
-            }    
-            
-        } catch (\Exception $e) {//errors exceptions
-          
-            $response = null;
-            
-            switch (get_class($e)) {
-              case QueryException::class:$response = $e->getMessage();
-              case Exception::class:$response = $e->getMessage();
-              default: $response = get_class($e);
-            }              
-            
-            if (request()->wantsJson()) {
-              return response()->json(['status'=>false,'msg'=>$response]);
-            }else{
-              return redirect('/admin/type')->withErrors($response);
-            }  
-          
-        }  
+        if (request()->wantsJson()) {
+          return response()->json(['status'=>true,'msg'=>$response]);
+        }else{
+          return back()->with('success', $response);
+        }    
     }
 }

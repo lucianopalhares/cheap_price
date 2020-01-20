@@ -4,10 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Database\QueryException;
-use Illuminate\Validation\ValidationException;
-use Exception;
-use Illuminate\Database\Eloquent\ModelNotFoundException as ModelNotFoundException;
 use Illuminate\Validation\Rule;
 use \App;
 use Auth;
@@ -16,8 +12,12 @@ class CompaniesController extends Controller
 {
     protected $model;
     protected $companyType;
+    protected $title;
+    protected $path_view;
     
     public function __construct(){
+      $this->title = trans('app.company');
+      $this->path_view = 'admin.company';
       $this->model = App::make('App\Company');
       $this->companyType = App::make('App\CompanyType');
     }
@@ -30,10 +30,10 @@ class CompaniesController extends Controller
     {
         if (Auth::user()->isAdmin()) {
           $items = $this->model::paginate(10);
-          return view('admin.company.index',compact('items'));
+          return view($this->path_view.'.index',compact('items'));
         }else{
           $items = $this->model::whereUserId(Auth::user()->id)->paginate(10);
-          return view('admin.company.index',compact('items'));
+          return view($this->path_view.'.index',compact('items'));
         }
     }
 
@@ -48,7 +48,7 @@ class CompaniesController extends Controller
           return back()->withErrors(trans('app.has_company'));
         }
         $companyTypes = $this->companyType::all();
-        return view('admin.company.form',compact('companyTypes'));
+        return view($this->path_view.'.form',compact('companyTypes'));
     }
 
     /**
@@ -84,53 +84,33 @@ class CompaniesController extends Controller
 
         $slug = str_slug($request->name);
 
-        try {
+        if($update){
 
-            if($update){
-
-                $model = $this->model->findOrFail($request->id);
+            $model = $this->model->findOrFail($request->id);
                 
-            }else{
-                $model = new App\Company;
-            }
-            $model->name = $request->name;
-            $model->company_type_id = $request->company_type_id;
-            $model->user_id = Auth::user()->id;
+        }else{
+            $model = new App\Company;
+        }
+        $model->name = $request->name;
+        $model->company_type_id = $request->company_type_id;
+        $model->user_id = Auth::user()->id;
             
-            $save = $model->save();
+        $save = $model->save();
             
-            $response = trans('app.company').' ';
+        $response = $this->title.' ';
             
-            if($update){
-              $response .= trans('app.updated_success');
-            }else{
-              $response .= trans('app.created_success');
-            }
+        if($update){
+          $response .= trans('app.updated_success');
+        }else{
+          $response .= trans('app.created_success');
+        }
             
-            if (request()->wantsJson()) {
-              return response()->json(['status'=>true,'msg'=>$response]);
-            }else{
-              return back()->with('success', $response);
-            }            
+        if (request()->wantsJson()) {
+          return response()->json(['status'=>true,'msg'=>$response]);
+        }else{
+          return back()->with('success', $response);
+        }            
             
-        } catch (\Exception $e) {//errors exceptions
-          
-            $response = null;
-            
-            switch (get_class($e)) {
-              case QueryException::class:$response = $e->getMessage();
-              case Exception::class:$response = $e->getMessage();
-              case ValidationException::class:$response = $e;
-              default: $response = get_class($e);
-            }              
-            
-            if (request()->wantsJson()) {
-              return response()->json(['status'=>false,'msg'=>$response]);
-            }else{
-              return back()->withInput($request->toArray())->withErrors($response);
-            }  
-          
-        }    
     }
     /**
      * Display the specified resource.
@@ -140,7 +120,17 @@ class CompaniesController extends Controller
      */
     public function show($id)
     {
-        //
+        $show = true;
+        $item = $this->model->findOrFail($id);
+
+        if (!Auth::user()->isAdmin()) {
+          if (Auth::user()->company->id != $item->id) {
+            return back()->withErrors(trans('app.notyour_company'));
+          }
+        }  
+            
+        $companyTypes = $this->companyType::all();
+        return view($this->path_view.'.form',compact('item','companyTypes','show'));  
     }
 
     /**
@@ -160,7 +150,7 @@ class CompaniesController extends Controller
         }  
             
         $companyTypes = $this->companyType::all();
-        return view('admin.company.form',compact('item','companyTypes'));  
+        return view($this->path_view.'.form',compact('item','companyTypes'));  
     }
 
     /**
@@ -183,17 +173,17 @@ class CompaniesController extends Controller
      */
     public function destroy($id)
     {
-            $model = $this->model->findOrFail($id);
+        $model = $this->model->findOrFail($id);
             
-            $deleted = $this->model->destroy($id); 
+        $deleted = $this->model->destroy($id); 
             
-            $response = trans('app.company').' '.trans('app.deleted_success');
+        $response = $this->title.' '.trans('app.deleted_success');
                                                 
-            if (request()->wantsJson()) {
-              return response()->json(['status'=>true,'msg'=>$response]);
-            }else{
-              return back()->with('success', $response);
-            }    
+        if (request()->wantsJson()) {
+          return response()->json(['status'=>true,'msg'=>$response]);
+        }else{
+          return back()->with('success', $response);
+        }    
 
     }
 }

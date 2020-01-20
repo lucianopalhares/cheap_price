@@ -7,6 +7,8 @@ use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -58,10 +60,14 @@ class Handler extends ExceptionHandler
           $response = $exception->getMessage();
         }else if ($exception instanceof ValidationException) {
           $response = $exception->getMessage();
+        }else if ($exception instanceof NotFoundHttpException) {
+          $response = 'Link = '.$request->url().' - '.trans('app.not_found');
+        }else if ($exception instanceof MethodNotAllowedHttpException) {
+          $response = $exception->getMessage();
         }else if ($exception instanceof Exception) {
-          $response = $exception->getMessage();
+          $response = get_class($exception);
         }else{
-          $response = $exception->getMessage();
+          $response = get_class($exception);
         }
         
         if (request()->wantsJson()) {

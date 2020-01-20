@@ -35,10 +35,20 @@
       <td>{{$item->name}}</td>
       <td>{{$item->slug}}</td>
       <td>
-        <a href="{{url('admin/brand/6/edit?redirect=/admin/brand')}}" class="text-primary"><span data-feather="edit"></span></a>
+        <a href="{{url('admin/brand/'.$item->id.'/edit?redirect=/admin/brand')}}" class="text-primary"><span data-feather="edit"></span></a>
+        <a href="{{url('admin/brand/'.$item->id)}}" class="text-secondary"><span data-feather="eye"></span></a>
         
         @if(!$item->products()->exists())
           <a href="#" class="text-danger" id="delete_item" data-id="{{ $item->id }}"><span data-feather="trash"></span></a>
+<!--
+          <a href="#" class="text-success" onclick="event.preventDefault();document.getElementById('delete-form-{{ $item->id }}').submit();"><span data-feather="trash"></span></a>
+          
+         <form action="{{ url('admin/brand/'.$item->id) }}" method="POST" id="delete-form-{{ $item->id }}" style="display: none;">
+              {{csrf_field()}}
+              {{ method_field('DELETE') }}
+              <input type="hidden" value="{{ $item->id }}" name="id">
+         </form>     
+-->   
         @endif       
       </td>
     </tr>
@@ -71,7 +81,7 @@
         if (confirm("{{trans('app.are_you_sure')}}")) {
           
           $.ajax({
-            url: "brand/"+id, //or you can use url: "company/"+id,
+            url: "{{url('admin/brand')}}"+"/"+id,
             type: 'DELETE',
             dataType: "json",
             data: {

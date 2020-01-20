@@ -71,7 +71,7 @@
         if (confirm("{{trans('app.are_you_sure')}}")) {
           
           $.ajax({
-            url: "company/"+id, //or you can use url: "company/"+id,
+            url: "{{url('admin/company')}}"+"/"+id,
             type: 'DELETE',
             dataType: "json",
             data: {
