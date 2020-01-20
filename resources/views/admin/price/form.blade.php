@@ -65,12 +65,12 @@
       <div class="form-group col-md-2 "></div>
       <div class="form-group col-md-3">
         <label for="date_start">{{trans('validation.attributes.date_start')}} </label>
-        <input {{isset($show)?"disabled='disabled'":''}} type="text" name="date_start" value="{{ old('date_start',isset($item->date_start)?$item->date_start:' ') }}" class="form-control {{ $errors->has('date_start')? 'is-invalid':'' }}" id="date_start" placeholder="">
+        <input {{isset($show)?"disabled='disabled'":''}} type="text" name="date_start" value="{{ old('date_start',isset($item->date_start)?$item->date_start:date('d/m/Y')) }}" class="form-control {{ $errors->has('date_start')? 'is-invalid':'' }}" id="date_start" placeholder="">
         {!! $errors->has('date_start')? '<small id="passwordHelpBlock" class="form-text text-danger">'.$errors->first('date_start').'</small>':'' !!}
       </div>
       <div class="form-group col-md-3">
         <label for="date_end">{{trans('validation.attributes.date_end')}} </label>
-        <input {{isset($show)?"disabled='disabled'":''}} type="text" name="date_end" value="{{ old('date_end',isset($item->date_end)?$item->date_end:' ') }}" class="form-control {{ $errors->has('date_end')? 'is-invalid':'' }}" id="date_end" placeholder="">
+        <input {{isset($show)?"disabled='disabled'":''}} type="text" name="date_end" value="{{ old('date_end',isset($item->date_end)?$item->date_end:'') }}" class="form-control {{ $errors->has('date_end')? 'is-invalid':'' }}" id="date_end" placeholder="">
         {!! $errors->has('date_end')? '<small id="passwordHelpBlock" class="form-text text-danger">'.$errors->first('date_end').'</small>':'' !!}
       </div>
       <div class="form-group col-md-3"></div>

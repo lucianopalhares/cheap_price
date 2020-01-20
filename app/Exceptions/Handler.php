@@ -9,6 +9,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Facade\Ignition\Exceptions\ViewException;
 
 class Handler extends ExceptionHandler
 {
@@ -51,24 +52,25 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {        
-        $response = null;
-        
+        $response = null;        
         if ($exception instanceof ModelNotFoundException) {
           $response = trans('app.not_found');  
           //$response = 'Entry for '.str_replace('App\\', '', $exception->getModel()).' not found';          
         }else if ($exception instanceof QueryException) {
           $response = $exception->getMessage();
         }else if ($exception instanceof ValidationException) {
-          $response = $exception->getMessage();
+          $response = $exception->errors();
         }else if ($exception instanceof NotFoundHttpException) {
           $response = 'Link = '.$request->url().' - '.trans('app.not_found');
         }else if ($exception instanceof MethodNotAllowedHttpException) {
+          $response = $exception->getMessage();
+        }else if ($exception instanceof ViewException) {
           $response = $exception->getMessage();
         }else if ($exception instanceof Exception) {
           $response = get_class($exception);
         }else{
           $response = get_class($exception);
-        }
+        }        
         
         if (request()->wantsJson()) {
           $arr['status'] = false;

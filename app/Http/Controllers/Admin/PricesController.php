@@ -70,7 +70,7 @@ class PricesController extends Controller
         if($update){
           
           $rules = [
-              'price' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+              'price' => 'required|regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
               'date_start' => 'nullable|date_format:d/m/Y',
               'date_end' => 'nullable|date_format:d/m/Y',
               'product_id' => 'required'
@@ -79,13 +79,13 @@ class PricesController extends Controller
         }else{
           
           $rules = [
-              'price' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+              'price' => 'required|regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
               'date_start' => 'nullable|date_format:d/m/Y',
               'date_end' => 'nullable|date_format:d/m/Y',
               'product_id' => 'required'
           ];          
         }
-
+        
         $this->validate($request, $rules);
 
         $product = $this->product->findOrFail($request->product_id);
