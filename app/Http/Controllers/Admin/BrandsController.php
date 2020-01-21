@@ -110,7 +110,7 @@ class BrandsController extends Controller
     {
         $item = $this->model->findOrFail($id);
         $show = true;
-        return view($this->path_view.'.index',compact('item','show'));  
+        return view($this->path_view.'.form',compact('item','show'));  
     }
 
     /**
@@ -120,9 +120,9 @@ class BrandsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {                 
+    {               
         $item = $this->model->findOrFail($id);
-        return view($this->path_view.'.index',compact('item'));    
+        return view($this->path_view.'.form',compact('item'));    
 
     }
 
@@ -146,16 +146,18 @@ class BrandsController extends Controller
      */
     public function destroy($id)
     {          
-        $model = $this->model->findOrFail($id);
+        $model = $this->model->findOrFail($id);   
             
         $deleted = $this->model->destroy($id); 
-            
+        
         $response = $this->title.' '.trans('app.deleted_success');
                                                 
         if (request()->wantsJson()) {
           return response()->json(['status'=>true,'msg'=>$response]);
+        }else if($_GET['redirect']){
+          return redirect($_GET['redirect'])->with('success', $response);
         }else{
           return back()->with('success', $response);
-        }       
+        }              
     }
 }

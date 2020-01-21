@@ -50,7 +50,7 @@
         @endif
 
         @if(isset($item->id))
-          <a href="" class="btn btn-danger" id="delete_item" data-id="{{ $item->id }}">{{trans('app.delete')}}</a>
+          <a href="#" id="submit_form_delete" class="btn btn-danger">{{trans('app.delete')}}</a>
         @endif    
         
       </div>
@@ -60,45 +60,26 @@
   
 {{ Form::close() }}
 
+@if(isset($item->id))
+  <form id="form_delete" action="{{url('admin/brand/'.$item->id)}}?redirect=admin/brand" method="POST">   
+    @csrf
+    @method('DELETE')
+  </form>        
+@endif  
+
 </main>
 @endsection
 
 @section('page-js')
 
-<script>
+<script type="text/javascript">
 
-  jQuery(document).ready(function(){
-
-    $("a#delete_item").click(function(e){
-              
-        var id = $(this).data("id");
-        e.preventDefault();
-        var token = $("meta[name='csrf-token']").attr("content");
-        var url = e.target;
-                
-        if (confirm("{{trans('app.are_you_sure')}}")) {
-          
-          $.ajax({
-            url: "{{url('admin/brand')}}"+"/"+id,
-            type: 'DELETE',
-            dataType: "json",
-            data: {
-              _token: token,
-                  id: id
-                },
-              success: function (data){
-                
-                if(data.status){
-                  $( ".flash_msg" ).html('<div class="alert alert-success text-center" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data.msg+'</div>');
-              
-                  setInterval('location.reload()',1000);
-                }else{
-                  $( ".flash_msg" ).html('<div class="alert alert-danger text-center" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data.msg+'</div>');
-                }
-              }
-          });
-      }
-    });
+  $("a#submit_form_delete").click(function(e){
+    e.preventDefault();
+    if (confirm("{{trans('app.are_you_sure')}}")) {
+      document.getElementById('form_delete').submit();
+      return false;
+    }
   });
 </script>
 @endsection
